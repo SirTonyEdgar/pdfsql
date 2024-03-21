@@ -1,0 +1,80 @@
+
+CREATE TABLE FILM
+  (
+    id_film  VARCHAR2 (10) NOT NULL ,
+    judul    VARCHAR2 (50) ,
+    durasi   VARCHAR2 (10) ,
+    tahun    NUMBER ,
+    sinopsis VARCHAR2 (2000)
+  ) ;
+ALTER TABLE FILM ADD CONSTRAINT Film_PK PRIMARY KEY ( id_film ) ;
+
+CREATE TABLE TEATER
+  (
+    id_teater VARCHAR2 (10) NOT NULL ,
+    kelas        VARCHAR2 (10) ,
+    harga        NUMBER ,
+    kapasitas    NUMBER
+  ) ;
+ALTER TABLE TEATER ADD CONSTRAINT Teater_PK PRIMARY KEY ( id_teater ) ;
+
+CREATE TABLE JADWAL
+  (
+    id_jadwal       VARCHAR2 (10) NOT NULL ,
+    id_film         VARCHAR2 (10) NOT NULL ,
+    id_teater    VARCHAR2 (10) NOT NULL ,
+    periode_start   DATE ,
+    periode_end     DATE
+  ) ;
+ALTER TABLE JADWAL ADD CONSTRAINT Jadwal_PK PRIMARY KEY ( id_jadwal ) ;
+
+
+CREATE TABLE KURSI
+  (
+    id_inventaris VARCHAR2 (5) NOT NULL ,
+    id_teater VARCHAR2 (10) NOT NULL,
+	no_kursi     VARCHAR2 (5)
+  ) ;
+ALTER TABLE KURSI ADD CONSTRAINT Kursi_PK PRIMARY KEY ( id_inventaris ) ;
+
+
+CREATE TABLE MEMBER
+  (
+    id_member   VARCHAR2 (10) NOT NULL ,
+    nama_member VARCHAR2 (30) ,
+    no_hp       VARCHAR2 (13) ,
+    email       VARCHAR2 (50) ,
+    tgl_lahir   DATE
+  ) ;
+ALTER TABLE MEMBER ADD CONSTRAINT Member_PK PRIMARY KEY ( id_member ) ;
+
+
+CREATE TABLE TRANSAKSI
+  (
+    kode_pemesanan  VARCHAR2 (10) NOT NULL ,
+    id_member       VARCHAR2 (10) NOT NULL ,
+    id_jadwal       VARCHAR2 (10) NOT NULL ,
+    id_inventaris    VARCHAR2 (5) NOT NULL ,
+    tanggal         DATE ,
+    status          VARCHAR2 (10)
+  ) ;
+ALTER TABLE TRANSAKSI ADD CONSTRAINT Transaksi_PK PRIMARY KEY ( kode_pemesanan ) ;
+
+
+ALTER SESSION SET nls_date_format = 'dd-MM-yyyy';
+
+
+ALTER TABLE JADWAL ADD CONSTRAINT Jadwal_Film_FK FOREIGN KEY ( id_film ) REFERENCES Film ( id_film ) ;
+
+ALTER TABLE JADWAL ADD CONSTRAINT Jadwal_Teater_FK FOREIGN KEY ( id_teater ) REFERENCES Teater ( id_teater ) ;
+
+ALTER TABLE KURSI ADD CONSTRAINT Kursi_Teater_FK FOREIGN KEY ( id_teater ) REFERENCES Teater ( id_teater ) ;
+
+ALTER TABLE TRANSAKSI ADD CONSTRAINT TRANSAKSI_Jadwal_FK FOREIGN KEY ( id_jadwal ) REFERENCES Jadwal ( id_jadwal ) ;
+
+ALTER TABLE TRANSAKSI ADD CONSTRAINT TRANSAKSI_Kursi_FK FOREIGN KEY ( id_inventaris ) REFERENCES Kursi ( id_inventaris ) ;
+
+ALTER TABLE TRANSAKSI ADD CONSTRAINT TRANSAKSI_Member_FK FOREIGN KEY ( id_member ) REFERENCES Member ( id_member ) ;
+
+
+
